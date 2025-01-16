@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trade System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #1e1e2f;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .trade-container {
+            background-color: #292a3a;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+            padding: 20px;
+            width: 600px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .trade-header {
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .trade-items {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .inventory, .trade-offer {
+            background-color: #3a3b52;
+            border-radius: 8px;
+            padding: 10px;
+            width: 48%;
+        }
+
+        .item {
+            background-color: #464866;
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .item:hover {
+            transform: scale(1.05);
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        button {
+            background-color: #5c5cff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        button:hover {
+            background-color: #4a4ad4;
+        }
+
+        button.cancel {
+            background-color: #ff5c5c;
+        }
+
+        button.cancel:hover {
+            background-color: #d44a4a;
+        }
+    </style>
+</head>
+<body>
+    <div class="trade-container">
+        <div class="trade-header">Trade System</div>
+        <div class="trade-items">
+            <div class="inventory">
+                <h3>Your Inventory</h3>
+                <div id="inventory-list"></div>
+            </div>
+            <div class="trade-offer">
+                <h3>Trade Offer</h3>
+                <div id="trade-offer-list"></div>
+            </div>
+        </div>
+        <div class="buttons">
+            <button id="confirm-trade">Confirm</button>
+            <button class="cancel" id="cancel-trade">Cancel</button>
+        </div>
+    </div>
+
+    <script>
+        const inventoryList = document.getElementById('inventory-list');
+        const tradeOfferList = document.getElementById('trade-offer-list');
+
+        // Example inventory items
+        const inventory = ['Item 1', 'Item 2', 'Item 3', 'Item 4'];
+        const tradeOffer = [];
+
+        function renderItems() {
+            inventoryList.innerHTML = '';
+            inventory.forEach((item, index) => {
+                const itemDiv = document.createElement('div');
+                itemDiv.className = 'item';
+                itemDiv.textContent = item;
+                itemDiv.onclick = () => addToTrade(index);
+                inventoryList.appendChild(itemDiv);
+            });
+
+            tradeOfferList.innerHTML = '';
+            tradeOffer.forEach((item, index) => {
+                const itemDiv = document.createElement('div');
+                itemDiv.className = 'item';
+                itemDiv.textContent = item;
+                itemDiv.onclick = () => removeFromTrade(index);
+                tradeOfferList.appendChild(itemDiv);
+            });
+        }
+
+        function addToTrade(index) {
+            tradeOffer.push(inventory[index]);
+            inventory.splice(index, 1);
+            renderItems();
+        }
+
+        function removeFromTrade(index) {
+            inventory.push(tradeOffer[index]);
+            tradeOffer.splice(index, 1);
+            renderItems();
+        }
+
+        document.getElementById('confirm-trade').onclick = () => {
+            console.log('Trade Confirmed:', tradeOffer);
+            alert('Trade Confirmed!');
+        };
+
+        document.getElementById('cancel-trade').onclick = () => {
+            console.log('Trade Cancelled');
+            alert('Trade Cancelled!');
+        };
+
+        renderItems();
+    </script>
+</body>
+</html>
